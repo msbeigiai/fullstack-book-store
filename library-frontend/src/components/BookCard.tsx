@@ -1,8 +1,18 @@
-import React from 'react'
+import { Card, CardBody, Heading, Image } from '@chakra-ui/react'
+import { Book } from '../hooks/useBooks'
 
-const BookCard = () => {
+interface Props {
+    book: Book
+}
+
+const BookCard = ({book}: Props) => {
   return (
-    <div>BookCard</div>
+    <Card>
+        <Image src={book.image} boxSize="100px" />
+        <CardBody>
+            <Heading fontSize='2xl'>{book.title}</Heading>
+        </CardBody>
+    </Card>
   )
 }
 
