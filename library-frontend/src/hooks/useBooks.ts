@@ -16,7 +16,7 @@ const useBooks = () => {
   const fetchBooks = () =>
     axios
       .get<Book[]>("http://localhost:8080/api/v1/books")
-      .then((res) => res.data);
+      .then((res) => res.data["_embedded"]["books"]);
 
   return useQuery<Book[], Error>({
     queryKey: ["books"],

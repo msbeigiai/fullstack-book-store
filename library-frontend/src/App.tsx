@@ -1,9 +1,7 @@
+import BookList from "./components/BookList";
 
 function App() {
-
-  return (
-    <h1>Welcome</h1>
-  )
+  return <BookList />;
 }
 
-export default App
+export default App;
