@@ -1,6 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import BookList from "./components/BookList";
 import { Book } from "./hooks/useBooks";
+import NavBar from "./components/NavBar";
 
 export interface BookQuery {
   books: Book[];
@@ -19,7 +20,12 @@ function App() {
           lg: "200px 1fr",
         }}
       >
-        <GridItem area="nav"></GridItem>
+        <GridItem area="nav">
+          <NavBar />
+        </GridItem>
+        <GridItem area="aside" paddingX={5}>
+          Aside
+        </GridItem>
         <GridItem area="main">
           <BookList />
         </GridItem>
