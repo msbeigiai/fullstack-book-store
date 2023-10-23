@@ -1,9 +1,14 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import useBooks from "../hooks/useBooks";
 import BookCard from "./BookCard";
+import { BookQuery } from "../App";
 
-const BookList = () => {
-  const { data: books, isLoading, error } = useBooks();
+interface Props {
+  bookQuery: BookQuery;
+}
+
+const BookList = ({ bookQuery }: Props) => {
+  const { data, isLoading, error } = useBooks();
 
   if (error) return <p>{error.message}</p>;
 
@@ -15,7 +20,7 @@ const BookList = () => {
       padding="10px"
       spacing={6}
     >
-      {books?.map((book) => (
+      {data?._embedded.books.map((book) => (
         <BookCard book={book} />
       ))}
     </SimpleGrid>

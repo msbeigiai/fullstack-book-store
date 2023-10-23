@@ -12,15 +12,18 @@ export interface Book {
   image: string;
 }
 
-const useBooks = () => {
-  const fetchBooks = () =>
-    axios
-      .get<Book[]>("http://localhost:8080/api/v1/books")
-      .then((res) => res.data["_embedded"]["books"]);
+interface FetchResponse<T> {
+  count: number;
+  _embedded: { books: T[] };
+}
 
-  return useQuery<Book[], Error>({
+const useBooks = () => {
+  return useQuery({
     queryKey: ["books"],
-    queryFn: fetchBooks,
+    queryFn: () =>
+      axios
+        .get<FetchResponse<Book>>("http://localhost:8080/api/v1/books")
+        .then((res) => res.data),
     staleTime: 10 * 1000,
   });
 };

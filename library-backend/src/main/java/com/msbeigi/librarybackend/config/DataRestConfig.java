@@ -17,7 +17,7 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
         disableHttpMethods(config, unsupportedActions);
 
-        String allowedOrigins = "http://localhost:5173";
+        String[] allowedOrigins = {"http://localhost:5173", "http://localhost:5174"};
         cors.addMapping(config.getBasePath() + "/**")
                 .allowedOrigins(allowedOrigins);
     }
