@@ -1,31 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { Book } from "../entities/Book";
+import APIClient, { FetchResponse } from "../services/apiClient";
 
-export interface Book {
-  id: number;
-  title: string;
-  author: string;
-  description: string;
-  copies: number;
-  copiesAvailable: number;
-  category: string;
-  image: string;
-}
+const apiClient = new APIClient<Book>("/books")
 
-interface FetchResponse<T> {
-  count: number;
-  _embedded: { books: T[] };
-}
-
-const useBooks = () => {
-  return useQuery({
+const useBooks = () =>
+  useQuery<FetchResponse<Book>, Error>({
     queryKey: ["books"],
-    queryFn: () =>
-      axios
-        .get<FetchResponse<Book>>("http://localhost:8080/api/v1/books")
-        .then((res) => res.data),
-    staleTime: 10 * 1000,
+    queryFn: apiClient.getAll
   });
-};
 
 export default useBooks;

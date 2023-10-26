@@ -1,6 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import BookList from "./components/BookList";
-import { Book } from "./hooks/useBooks";
+import { Book } from "./entities/Book";
 import NavBar from "./components/NavBar";
 import { useState } from "react";
 import CategoryList from "./components/CategoryList";
@@ -29,7 +29,7 @@ function App() {
         </GridItem>
         <GridItem area="aside" paddingX={5}>
           <CategoryList
-            onSelectCategory={(category) => setBookQuery({...bookQuery, category})}
+            onSelectCategory={(category) => setBookQuery({ ...bookQuery, category })}
           />
         </GridItem>
         <GridItem area="main">

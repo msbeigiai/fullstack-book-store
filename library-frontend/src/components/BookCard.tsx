@@ -1,5 +1,5 @@
 import { Card, CardBody, Heading, Image, VStack, Text } from "@chakra-ui/react";
-import { Book } from "../hooks/useBooks";
+import { Book } from "../entities/Book";
 
 interface Props {
   book: Book;
