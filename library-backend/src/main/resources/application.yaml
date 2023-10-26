@@ -1,7 +1,7 @@
 spring:
-  data:
-    rest:
-      base-path: /api/v1
+#  data:
+#    rest:
+#      base-path: /api/v1
   jackson:
     default-property-inclusion: non_null
   datasource:
