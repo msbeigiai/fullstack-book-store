@@ -1,15 +1,14 @@
 package com.msbeigi.librarybackend.controller;
 
 import com.msbeigi.librarybackend.entity.Book;
+import com.msbeigi.librarybackend.model.BookRequestModel;
 import com.msbeigi.librarybackend.model.ResponseMapping;
 import com.msbeigi.librarybackend.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,6 +43,15 @@ public class BookController {
                                 .dateTime(LocalDateTime.now())
                                 .results(bookService.getBookAllCategories(id))
                                 .build()
+                );
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addBook(@RequestBody BookRequestModel bookRequestModel) {
+        bookService.addBook(bookRequestModel);
+        return ResponseEntity.created(URI.create(""))
+                .body(
+                        "Book " + bookRequestModel.title() + " has been added successfully."
                 );
     }
 }

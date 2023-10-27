@@ -1,13 +1,19 @@
 package com.msbeigi.librarybackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Table(name = "book")
+@NoArgsConstructor
+@Data
 public class Book {
     @Id
     @SequenceGenerator(
@@ -39,86 +45,39 @@ public class Book {
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
 
-    @ManyToOne(
-            fetch = FetchType.EAGER,
-            targetEntity = Category.class
+    @ManyToMany(
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
     )
-    private Category category;
-
-    public Book() {
-    }
+    @JoinTable(
+            name = "book_categories",
+            joinColumns = {
+                    @JoinColumn(name = "book_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "category_id")
+            }
+    )
+    List<Category> categories;
 
     public Book(String title, String author,
                 String description, Integer copies,
                 Integer copiesAvailable, String image,
-                Category category) {
+                List<Category> categories) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.copies = copies;
         this.copiesAvailable = copiesAvailable;
         this.image = image;
-        this.category = category;
+        this.categories = categories;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCopies() {
-        return copies;
-    }
-
-    public void setCopies(Integer copies) {
-        this.copies = copies;
-    }
-
-    public Integer getCopiesAvailable() {
-        return copiesAvailable;
-    }
-
-    public void setCopiesAvailable(Integer copiesAvailable) {
-        this.copiesAvailable = copiesAvailable;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    public void addCategories(Category category) {
+        if (categories == null) {
+            categories = new ArrayList<>();
+            categories.add(category);
+        }
     }
 }
 
