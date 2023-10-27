@@ -1,19 +1,13 @@
 package com.msbeigi.librarybackend.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
 @Table(name = "book")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Book {
     @Id
     @SequenceGenerator(
@@ -42,11 +36,90 @@ public class Book {
     @Column(name = "copies_available")
     private Integer copiesAvailable;
 
-    @Column(name = "category")
-    private String category;
-
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
+
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            targetEntity = Category.class
+    )
+    private Category category;
+
+    public Book() {
+    }
+
+    public Book(String title, String author,
+                String description, Integer copies,
+                Integer copiesAvailable, String image,
+                Category category) {
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.copies = copies;
+        this.copiesAvailable = copiesAvailable;
+        this.image = image;
+        this.category = category;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getCopies() {
+        return copies;
+    }
+
+    public void setCopies(Integer copies) {
+        this.copies = copies;
+    }
+
+    public Integer getCopiesAvailable() {
+        return copiesAvailable;
+    }
+
+    public void setCopiesAvailable(Integer copiesAvailable) {
+        this.copiesAvailable = copiesAvailable;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }
 
 

@@ -7,11 +7,11 @@ interface Props {
 
 const BookCard = ({ book }: Props) => {
   return (
-    <Card size="xs">
-      <Image src={book.image} maxW="50%" objectFit="cover" />
+    <Card>
+      <Image src={book.image} boxSize="200px" />
       <CardBody>
-        <VStack padding={3} align="flex-start">
-          <Heading fontSize="2xl">{book.title}</Heading>
+        <VStack padding={1} align="flex-start">
+          <Heading fontSize="xl">{book.title}</Heading>
           <Heading fontSize="sm">Category: {book.category}</Heading>
           <Text>Available: {book.copiesAvailable}</Text>
         </VStack>

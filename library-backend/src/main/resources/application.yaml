@@ -4,6 +4,8 @@ spring:
 #      base-path: /api/v1
   jackson:
     default-property-inclusion: non_null
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
   datasource:
     url: jdbc:postgresql://localhost:5432/library_db
     username: msbeigi
