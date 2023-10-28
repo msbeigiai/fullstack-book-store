@@ -33,7 +33,7 @@ function App() {
           />
         </GridItem>
         <GridItem area="main">
-          <BookList bookQuery={bookQuery} />
+          <BookList />
         </GridItem>
       </Grid>
     </>

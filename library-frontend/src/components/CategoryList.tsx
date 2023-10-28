@@ -1,33 +1,26 @@
-import React from "react";
-import useBooks from "../hooks/useBooks";
-import { Button, List, ListItem } from "@chakra-ui/react";
+import { Button, List, ListItem, Spinner, Text } from "@chakra-ui/react";
+import useCategories from "../hooks/useCategories";
 
-interface Props {
-  onSelectCategory: (category: string) => void;
-}
 
-const categories = [
-    {name: "FE", label: "Frontend"},
-    {name: "BE", label: "Backend"},
-    {name: "Data", label: "Data"},
-    {name: "DevOps", label: "DevOps"},
-];
+const CategoryList = () => {
 
-const CategoryList = ({ onSelectCategory }: Props) => {
-  const { data: books } = useBooks();
+  const { data, isLoading, error } = useCategories();
+
+  if (isLoading) return <Spinner />
+
+  if (error) return <Text>{error.message}</Text>
 
   return (
     <List>
-      {categories.map((category) => (
+      {data?.results.map((category) => (
         <ListItem key={category.name}>
           <Button
             whiteSpace="normal"
             textAlign="left"
             fontSize="lg"
             variant="link"
-            onClick={() => onSelectCategory(category.label)}
           >
-            {category.label}
+            {category.name}
           </Button>
         </ListItem>
       ))}
