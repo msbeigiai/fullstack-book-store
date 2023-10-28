@@ -24,6 +24,10 @@ class APIClient<T> {
             .get<FetchResponse<T>>(this.endpoint)
             .then((res) => res.data)
 
+    getAllFilteredBooks = (id: number | string) =>
+        axiosInstance
+            .get<FetchResponse<T>>(this.endpoint + "/" + id + "/books")
+            .then((res) => res.data)
 }
 
 export default APIClient;

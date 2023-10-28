@@ -1,17 +1,18 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import BookList from "./components/BookList";
-import { Book } from "./entities/Book";
-import NavBar from "./components/NavBar";
 import { useState } from "react";
+import BookList from "./components/BookList";
 import CategoryList from "./components/CategoryList";
+import NavBar from "./components/NavBar";
+import { Book } from "./entities/Book";
 
 export interface BookQuery {
   book: Book;
-  category: string;
+  categoryId: number;
 }
 
 function App() {
-  const [bookQuery, setBookQuery] = useState<BookQuery>({} as BookQuery);
+
+  const [categoryId, setCategoryId] = useState(0)
   return (
     <>
       <Grid
@@ -29,11 +30,11 @@ function App() {
         </GridItem>
         <GridItem area="aside" paddingX={5}>
           <CategoryList
-            onSelectCategory={(category) => setBookQuery({ ...bookQuery, category })}
+            setSelectedCategoryId={(categoryId) => setCategoryId(categoryId)}
           />
         </GridItem>
         <GridItem area="main">
-          <BookList />
+          <BookList categoryId={categoryId} />
         </GridItem>
       </Grid>
     </>
