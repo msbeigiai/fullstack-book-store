@@ -1,24 +1,28 @@
 package com.msbeigi.librarybackend.service.impl;
 
-import com.msbeigi.librarybackend.dto.BookDTO;
 import com.msbeigi.librarybackend.dto.DTOMapper;
 import com.msbeigi.librarybackend.entity.Book;
 import com.msbeigi.librarybackend.entity.Category;
 import com.msbeigi.librarybackend.model.BookRequestModel;
+import com.msbeigi.librarybackend.model.CategoryRequest;
 import com.msbeigi.librarybackend.repository.BookRepository;
+import com.msbeigi.librarybackend.repository.CategoryRepository;
 import com.msbeigi.librarybackend.service.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
     private final DTOMapper dtoMapper;
 
-    public BookServiceImpl(BookRepository bookRepository, DTOMapper dtoMapper) {
+    public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, DTOMapper dtoMapper) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
         this.dtoMapper = dtoMapper;
     }
 
@@ -31,7 +35,7 @@ public class BookServiceImpl implements BookService {
     public List<Category> getBookAllCategories(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
-        return List.of();
+        return book.getCategories();
     }
 
     @Override
@@ -42,10 +46,52 @@ public class BookServiceImpl implements BookService {
                 bookRequestModel.description(),
                 bookRequestModel.copies(),
                 bookRequestModel.copiesAvailable(),
-                bookRequestModel.image(),
-                bookRequestModel.categories()
-
+                bookRequestModel.image()
         );
         bookRepository.save(book);
     }
+
+    @Override
+    public Book findById(Long bookId) {
+        return bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException( "Book not found"));
+    }
+
+    @Override
+    public List<Book> findBooksByCategoriesId(Long categoryId) {
+        if (!categoryRepository.existsById(categoryId))
+            throw new RuntimeException("Category not found!");
+        return bookRepository.findBooksByCategoriesId(categoryId);
+    }
+
+    @Override
+    public Category addCategory(Long bookId, CategoryRequest categoryRequest) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow();
+        boolean categoryExist = categoryRepository.findByNameIgnoreCase(categoryRequest.name())
+                .isPresent();
+
+        if (categoryExist) {
+            Category category = categoryRepository.findByNameIgnoreCase(categoryRequest.name()).get();
+            book.addCategory(category);
+            bookRepository.save(book);
+            return category;
+        }
+
+        Category newCategory = new Category(categoryRequest.name());
+        book.addCategory(newCategory);
+        return categoryRepository.save(newCategory);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+

@@ -12,8 +12,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "book")
-@NoArgsConstructor
-@Data
 public class Book {
     @Id
     @SequenceGenerator(
@@ -46,39 +44,99 @@ public class Book {
     private String image;
 
     @ManyToMany(
-            cascade = CascadeType.MERGE,
+            mappedBy = "books",
             fetch = FetchType.EAGER
     )
-    @JoinTable(
-            name = "book_categories",
-            joinColumns = {
-                    @JoinColumn(name = "book_id")
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(name = "category_id")
-            }
-    )
-    List<Category> categories;
+    List<Category> categories = new ArrayList<>();
+
+    public Book() {
+    }
 
     public Book(String title, String author,
                 String description, Integer copies,
-                Integer copiesAvailable, String image,
-                List<Category> categories) {
+                Integer copiesAvailable, String image) {
         this.title = title;
         this.author = author;
         this.description = description;
         this.copies = copies;
         this.copiesAvailable = copiesAvailable;
         this.image = image;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getCopies() {
+        return copies;
+    }
+
+    public void setCopies(Integer copies) {
+        this.copies = copies;
+    }
+
+    public Integer getCopiesAvailable() {
+        return copiesAvailable;
+    }
+
+    public void setCopiesAvailable(Integer copiesAvailable) {
+        this.copiesAvailable = copiesAvailable;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 
-    public void addCategories(Category category) {
-        if (categories == null) {
-            categories = new ArrayList<>();
-            categories.add(category);
+    public void addCategory(Category category) {
+        this.categories.add(category);
+        category.getBooks().add(this);
+    }
+
+    public void removeCategory(Long categoryId) {
+        Category category = this.categories.stream()
+                .filter(c -> c.getId().equals(categoryId)).findFirst().orElse(null);
+        if (category != null) {
+            this.categories.remove(category);
+            category.getBooks().remove(this);
         }
     }
+
 }
 
 

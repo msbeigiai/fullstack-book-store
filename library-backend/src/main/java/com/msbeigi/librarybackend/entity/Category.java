@@ -1,17 +1,16 @@
 package com.msbeigi.librarybackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "category")
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 public class Category {
 
     @SequenceGenerator(
@@ -29,7 +28,52 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-//    @ManyToMany(mappedBy = "categories")
-//    private List<Book> books;
 
+    @ManyToMany(
+            cascade = CascadeType.ALL
+    )
+    @JoinTable(
+            name = "book_categories",
+            joinColumns = {
+                    @JoinColumn(name = "book_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "category_id")
+            }
+    )
+    private List<Book> books = new ArrayList<>();
+
+    public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public Category(String name, List<Book> books) {
+        this.name = name;
+        this.books = books;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    @JsonIgnore
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }
