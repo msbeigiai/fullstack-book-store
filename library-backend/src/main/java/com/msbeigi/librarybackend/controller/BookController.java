@@ -22,13 +22,16 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll(
+            @RequestParam(name = "page", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "size", defaultValue = "5") Integer pageSize,
+            @RequestParam(name = "sort", defaultValue = "id") String sortBy) {
         return ResponseEntity.ok()
                 .body(
                         ResponseMapping.builder()
                                 .status(HttpStatus.OK)
                                 .dateTime(LocalDateTime.now())
-                                .results(bookService.findAll())
+                                .results(bookService.findAll(pageNumber, pageSize, sortBy))
                                 .build()
                 );
     }

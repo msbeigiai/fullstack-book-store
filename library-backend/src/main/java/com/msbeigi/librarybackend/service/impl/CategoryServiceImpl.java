@@ -5,6 +5,7 @@ import com.msbeigi.librarybackend.model.CategoryRequest;
 import com.msbeigi.librarybackend.repository.BookRepository;
 import com.msbeigi.librarybackend.repository.CategoryRepository;
 import com.msbeigi.librarybackend.service.CategoryService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -8,11 +8,10 @@ import com.msbeigi.librarybackend.model.CategoryRequest;
 import java.util.List;
 
 public interface BookService {
-    List<Book> findAll();
     List<Category> getBookAllCategories(Long id);
     void addBook(BookRequestModel bookRequestModel);
     Book findById(Long bookId);
     List<Book> findBooksByCategoriesId(Long categoryId);
-
+    List<Book> findAll(Integer pageNumber, Integer pageSize, String sortBy);
     Category addCategory(Long bookId, CategoryRequest categoryRequest);
 }
