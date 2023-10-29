@@ -18,6 +18,7 @@ import java.util.Map;
 public class ResponseMapping {
     private HttpStatus status;
     private LocalDateTime dateTime;
+    String next = "";
     private List<?> results;
 
 }

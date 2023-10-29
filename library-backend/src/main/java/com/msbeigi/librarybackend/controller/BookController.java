@@ -2,11 +2,15 @@ package com.msbeigi.librarybackend.controller;
 
 import com.msbeigi.librarybackend.model.BookRequestModel;
 import com.msbeigi.librarybackend.model.ResponseMapping;
+import com.msbeigi.librarybackend.model.Utils;
 import com.msbeigi.librarybackend.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,13 +28,19 @@ public class BookController {
     @GetMapping("/books")
     public ResponseEntity<?> getAll(
             @RequestParam(name = "page", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "size", defaultValue = "5") Integer pageSize,
-            @RequestParam(name = "sort", defaultValue = "id") String sortBy) {
+            @RequestParam(name = "size", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "sort", defaultValue = "id") String sortBy,
+            HttpServletRequest request) {
+
         return ResponseEntity.ok()
                 .body(
                         ResponseMapping.builder()
                                 .status(HttpStatus.OK)
                                 .dateTime(LocalDateTime.now())
+                                .next(Utils.createHttp(request.getServerName(),
+                                                request.getServerPort(),
+                                                request.getContextPath(), "api/v1/books")
+                                        + "?page=" + (pageNumber + 1))
                                 .results(bookService.findAll(pageNumber, pageSize, sortBy))
                                 .build()
                 );

@@ -1,46 +1,70 @@
-import { SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid, Spinner } from "@chakra-ui/react";
+import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import useBooks from "../hooks/useBooks";
 import BookCard from "./BookCard";
-import useCategoriesFilter from "../hooks/useCategoriesFilter";
 
-interface Props {
-  categoryId: number;
-}
 
-const BookList = ({ categoryId }: Props) => {
-  const { data: books, isLoading, error } = useBooks();
 
-  const { data: fBooks } = useCategoriesFilter(categoryId);
+const BookList = () => {
+  const { data, isLoading, error, fetchNextPage, hasNextPage } = useBooks();
 
   if (error) return <p>{error.message}</p>;
 
-  if (isLoading) return <p>Loading...</p>;
+  const fetchBookCount =
+    data?.pages.reduce((acc, page) => acc + page.results.length, 0) || 0;
 
-  if (categoryId === 0) {
-    return (
+
+  if (isLoading) return <Spinner />;
+
+  return (
+    <InfiniteScroll
+      dataLength={fetchBookCount}
+      hasMore={!!hasNextPage}
+      next={() => fetchNextPage()}
+      loader={<Spinner />}
+    >
       <SimpleGrid
         columns={{ sm: 1, md: 1, lg: 2, xl: 3 }}
         padding="10px"
         spacing={6}
       >
-        {books?.results.map((book) => (
-          <BookCard key={book.id} book={book} />
+        {data?.pages.map((page, index) => (
+          <React.Fragment key={index}>
+            {page.results.map(book => (
+              <BookCard key={book.id} book={book} />
+            ))}
+          </React.Fragment>
         ))}
       </SimpleGrid>
-    );
-  }
+    </InfiniteScroll>
+  );
 
-  return (
-    <SimpleGrid
-      columns={{ sm: 1, md: 1, lg: 2, xl: 3 }}
-      padding="10px"
-      spacing={6}
-    >
-      {fBooks?.results.map((book) => (
-        <BookCard key={book.id} book={book} />
-      ))}
-    </SimpleGrid>
-  )
+  // if (categoryId === 0) {
+
+  // }
+
+  // return (
+  //   <InfiniteScroll
+  //     dataLength={fetchBookCount}
+  //     hasMore={!!hasNextPage}
+  //     next={() => fetchNextPage()}
+  //     loader={<Spinner />}
+  //   >
+  //     <SimpleGrid
+  //       columns={{ sm: 1, md: 1, lg: 2, xl: 3 }}
+  //       padding="10px"
+  //       spacing={6}
+  //     >
+
+  //       {
+  //         books?.results.map((book) => (
+  //           <BookCard key={book.id} book={book} />
+  //         ))
+  //       }
+  //     </SimpleGrid >
+  //   </InfiniteScroll>
+  // )
 
 
 

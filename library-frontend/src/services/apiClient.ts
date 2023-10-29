@@ -1,9 +1,10 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 
 export interface FetchResponse<T> {
     status: string;
     datetime: string;
+    next: string | null;
     results: T[]
 }
 
@@ -19,9 +20,9 @@ class APIClient<T> {
         this.endpoint = endpoint;
     }
 
-    getAll = () =>
+    getAll = (config: AxiosRequestConfig) =>
         axiosInstance
-            .get<FetchResponse<T>>(this.endpoint)
+            .get<FetchResponse<T>>(this.endpoint, config)
             .then((res) => res.data)
 
     getAllFilteredBooks = (id: number | string) =>

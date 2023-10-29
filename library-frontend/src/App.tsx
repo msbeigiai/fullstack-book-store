@@ -35,7 +35,7 @@ function App() {
           />
         </GridItem>
         <GridItem area="main">
-          <BookList categoryId={categoryId} />
+          <BookList />
         </GridItem>
       </Grid>
     </>

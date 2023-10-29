@@ -3,10 +3,11 @@ import useCategories from "../hooks/useCategories";
 
 
 interface Props {
+  selectedCategoryId: number;
   setSelectedCategoryId: (id: number) => void;
 }
 
-const CategoryList = ({ setSelectedCategoryId }: Props) => {
+const CategoryList = ({ setSelectedCategoryId, selectedCategoryId }: Props) => {
 
   const { data, isLoading, error } = useCategories();
 
@@ -16,6 +17,15 @@ const CategoryList = ({ setSelectedCategoryId }: Props) => {
 
   return (
     <List>
+      <Button
+        onClick={() =>
+          setSelectedCategoryId(0)
+        }
+        fontWeight={selectedCategoryId === 0 ? "bold" : ""}
+        whiteSpace='normal' variant="link"
+      >
+        All Books
+      </Button>
       {data?.results.map((category) => (
         <ListItem key={category.id}>
           <Button
@@ -23,6 +33,7 @@ const CategoryList = ({ setSelectedCategoryId }: Props) => {
             textAlign="left"
             fontSize="lg"
             variant="link"
+            fontWeight={selectedCategoryId === category.id ? "bold" : ""}
             onClick={() => setSelectedCategoryId(category.id)}
           >
             {category.name}

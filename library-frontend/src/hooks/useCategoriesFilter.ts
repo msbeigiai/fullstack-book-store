@@ -6,7 +6,7 @@ const apiClient = new APIClient<Book>("/categories")
 
 const useCategoriesFilter = (bookId: number) =>
     useQuery({
-        queryKey: ["books", bookId],
+        queryKey: ["booksFiltered", bookId],
         queryFn: () => apiClient.getAllFilteredBooks(bookId)
     })
 
