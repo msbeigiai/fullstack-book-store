@@ -12,6 +12,7 @@ const BookCard = ({ book }: Props) => {
       <CardBody>
         <VStack padding={1} align="flex-start">
           <Heading fontSize="xl">{book.title}</Heading>
+          <Text fontWeight='bold'>Id: {book.id}</Text>
           <Text>Available: {book.copiesAvailable}</Text>
         </VStack>
       </CardBody>

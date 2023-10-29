@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
         if (bookResult.hasContent()) {
             return bookResult.getContent();
         } else {
-            return new ArrayList<Book>();
+            return new ArrayList<>();
         }
     }
 

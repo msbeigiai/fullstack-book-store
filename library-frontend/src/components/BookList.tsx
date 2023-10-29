@@ -22,7 +22,7 @@ const BookList = () => {
       dataLength={fetchBookCount}
       hasMore={!!hasNextPage}
       next={() => fetchNextPage()}
-      loader={<Spinner />}
+      loader={hasNextPage && <Spinner />}
     >
       <SimpleGrid
         columns={{ sm: 1, md: 1, lg: 2, xl: 3 }}
