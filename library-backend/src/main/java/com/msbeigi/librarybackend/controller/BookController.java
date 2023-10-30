@@ -1,5 +1,6 @@
 package com.msbeigi.librarybackend.controller;
 
+import com.msbeigi.librarybackend.entity.Book;
 import com.msbeigi.librarybackend.model.BookRequestModel;
 import com.msbeigi.librarybackend.model.ResponseMapping;
 import com.msbeigi.librarybackend.model.Utils;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,20 +32,38 @@ public class BookController {
             @RequestParam(name = "page", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "size", defaultValue = "10") Integer pageSize,
             @RequestParam(name = "sort", defaultValue = "id") String sortBy,
+            @RequestParam(name = "category", required = false) Long categoryId,
             HttpServletRequest request) {
 
-        return ResponseEntity.ok()
-                .body(
-                        ResponseMapping.builder()
-                                .status(HttpStatus.OK)
-                                .dateTime(LocalDateTime.now())
-                                .next(Utils.createHttp(request.getServerName(),
-                                                request.getServerPort(),
-                                                request.getContextPath(), "api/v1/books")
-                                        + "?page=" + (pageNumber + 1))
-                                .results(bookService.findAll(pageNumber, pageSize, sortBy))
-                                .build()
-                );
+        if (categoryId == null || categoryId == 0) {
+            return ResponseEntity.ok()
+                    .body(
+                            ResponseMapping.builder()
+                                    .status(HttpStatus.OK)
+                                    .dateTime(LocalDateTime.now())
+                                    .next(Utils.createHttp(request.getServerName(),
+                                            request.getServerPort(),
+                                            request.getContextPath(), "api/v1/books")
+                                            + "?page=" + (pageNumber + 1))
+                                    .results(bookService.findAll(pageNumber, pageSize, sortBy))
+                                    .build()
+                    );
+        } else {
+            return ResponseEntity.ok()
+                    .body(
+                            ResponseMapping.builder()
+                                    .status(HttpStatus.OK)
+                                    .dateTime(LocalDateTime.now())
+                                    .next(Utils.createHttp(request.getServerName(),
+                                            request.getServerPort(),
+                                            request.getContextPath(), "api/v1/books?category="+categoryId)
+                                            + "?page=" + (pageNumber + 1)
+                                    )
+                                    .results(bookService.findBooksByCategoriesId(pageNumber, pageSize, sortBy, categoryId))
+                                    .build()
+                    );
+        }
+
     }
 
     @GetMapping("/books/{id}")
@@ -58,7 +78,7 @@ public class BookController {
                 );
     }
 
-    @GetMapping("/categories/{id}/books")
+    /*@GetMapping("/categories/{id}/books")
     public ResponseEntity<?> getBookAllCategory(@PathVariable("id") Long id) {
         return ResponseEntity.ok()
                 .body(
@@ -68,7 +88,7 @@ public class BookController {
                                 .results(bookService.findBooksByCategoriesId(id))
                                 .build()
                 );
-    }
+    }*/
 
     @PostMapping("/books")
     public ResponseEntity<?> addBook(@RequestBody BookRequestModel bookRequestModel) {
@@ -82,6 +102,5 @@ public class BookController {
                                 .build()
                 );
     }
-
 
 }

@@ -1,15 +1,18 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import APIClient, { FetchResponse } from "../services/apiClient";
 import { Book } from "../entities/Book";
+import useBookQueryStore from "../store";
 
 const apiClient = new APIClient<Book>("/books");
 
 const useBooks = () => {
+  const bookQuery = useBookQueryStore(s => s.bookQuery)
   return useInfiniteQuery<FetchResponse<Book>, Error>({
-    queryKey: ["books"],
+    queryKey: ["books", bookQuery],
     queryFn: ({ pageParam = 0 }) =>
       apiClient.getAll({
         params: {
+          category: bookQuery.categoryId,
           page: pageParam,
         },
       }),

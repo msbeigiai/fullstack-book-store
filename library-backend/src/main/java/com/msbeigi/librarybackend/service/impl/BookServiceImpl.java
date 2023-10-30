@@ -70,10 +70,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> findBooksByCategoriesId(Long categoryId) {
+    public List<Book> findBooksByCategoriesId(Integer pageNumber, Integer pageSize, String sortBy, Long categoryId) {
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         if (!categoryRepository.existsById(categoryId))
             throw new RuntimeException("Category not found!");
-        return bookRepository.findBooksByCategoriesId(categoryId);
+
+        Page<Book> bookCategoryResult = bookRepository.findBooksByCategoriesId(paging, categoryId);
+        if (bookCategoryResult.hasContent()) {
+            return bookCategoryResult.getContent();
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
