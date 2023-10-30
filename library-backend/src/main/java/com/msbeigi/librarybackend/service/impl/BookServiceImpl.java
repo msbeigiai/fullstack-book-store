@@ -24,7 +24,8 @@ public class BookServiceImpl implements BookService {
     private final CategoryRepository categoryRepository;
     private final DTOMapper dtoMapper;
 
-    public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository, DTOMapper dtoMapper) {
+    public BookServiceImpl(BookRepository bookRepository, CategoryRepository categoryRepository,
+            DTOMapper dtoMapper) {
         this.bookRepository = bookRepository;
         this.categoryRepository = categoryRepository;
         this.dtoMapper = dtoMapper;
@@ -52,25 +53,21 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addBook(BookRequestModel bookRequestModel) {
-        Book book = new Book(
-                bookRequestModel.title(),
-                bookRequestModel.author(),
-                bookRequestModel.description(),
-                bookRequestModel.copies(),
-                bookRequestModel.copiesAvailable(),
-                bookRequestModel.image()
-        );
+        Book book = new Book(bookRequestModel.title(), bookRequestModel.author(),
+                bookRequestModel.description(), bookRequestModel.copies(),
+                bookRequestModel.copiesAvailable(), bookRequestModel.image());
         bookRepository.save(book);
     }
 
     @Override
     public Book findById(Long bookId) {
         return bookRepository.findById(bookId)
-                .orElseThrow(() -> new RuntimeException( "Book not found"));
+                .orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
     @Override
-    public List<Book> findBooksByCategoriesId(Integer pageNumber, Integer pageSize, String sortBy, Long categoryId) {
+    public List<Book> findBooksByCategoriesId(Integer pageNumber, Integer pageSize, String sortBy,
+            Long categoryId) {
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
         if (!categoryRepository.existsById(categoryId))
             throw new RuntimeException("Category not found!");
@@ -85,13 +82,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Category addCategory(Long bookId, CategoryRequest categoryRequest) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow();
-        boolean categoryExist = categoryRepository.findByNameIgnoreCase(categoryRequest.name())
-                .isPresent();
+        Book book = bookRepository.findById(bookId).orElseThrow();
+        boolean categoryExist =
+                categoryRepository.findByNameIgnoreCase(categoryRequest.name()).isPresent();
 
         if (categoryExist) {
-            Category category = categoryRepository.findByNameIgnoreCase(categoryRequest.name()).get();
+            Category category =
+                    categoryRepository.findByNameIgnoreCase(categoryRequest.name()).get();
             book.addCategory(category);
             bookRepository.save(book);
             return category;
@@ -101,16 +98,18 @@ public class BookServiceImpl implements BookService {
         book.addCategory(newCategory);
         return categoryRepository.save(newCategory);
     }
+
+    @Override
+    public List<Book> findBooksByTitleIgnoreCase(Integer pageNumber, Integer pageSize,
+            String sortBy, String search) {
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Page<Book> bookSearchResult = bookRepository.findBooksByTitleIgnoreCase(paging, search);
+        if (bookSearchResult.hasContent()) {
+            return bookSearchResult.getContent();
+        } else {
+            return new ArrayList<>();
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
 
 
