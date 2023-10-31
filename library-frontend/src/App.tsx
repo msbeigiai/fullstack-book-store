@@ -1,5 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/react";
-import { useState } from "react";
+import { Grid, GridItem, Show } from "@chakra-ui/react";
 import BookList from "./components/BookList";
 import CategoryList from "./components/CategoryList";
 import NavBar from "./components/NavBar";
@@ -11,8 +10,6 @@ export interface BookQuery {
 }
 
 function App() {
-
-  const [categoryId, setCategoryId] = useState(0)
   return (
     <>
       <Grid
@@ -25,9 +22,11 @@ function App() {
           lg: "200px 1fr",
         }}
       >
-        <GridItem area="nav">
-          <NavBar />
-        </GridItem>
+        <Show above="lg">
+          <GridItem area="nav">
+            <NavBar />
+          </GridItem>
+        </Show>
         <GridItem area="aside" paddingX={5}>
           <CategoryList />
         </GridItem>
