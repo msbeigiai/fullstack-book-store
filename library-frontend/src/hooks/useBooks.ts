@@ -13,6 +13,7 @@ const useBooks = () => {
       apiClient.getAll({
         params: {
           category: bookQuery.categoryId,
+          search: bookQuery.searchText,
           page: pageParam,
         },
       }),
