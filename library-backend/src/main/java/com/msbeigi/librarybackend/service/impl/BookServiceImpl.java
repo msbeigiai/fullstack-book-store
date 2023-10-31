@@ -1,5 +1,12 @@
 package com.msbeigi.librarybackend.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import com.msbeigi.librarybackend.dto.DTOMapper;
 import com.msbeigi.librarybackend.entity.Book;
 import com.msbeigi.librarybackend.entity.Category;
@@ -8,14 +15,6 @@ import com.msbeigi.librarybackend.model.CategoryRequest;
 import com.msbeigi.librarybackend.repository.BookRepository;
 import com.msbeigi.librarybackend.repository.CategoryRepository;
 import com.msbeigi.librarybackend.service.BookService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -103,7 +102,8 @@ public class BookServiceImpl implements BookService {
     public List<Book> findBooksByTitleIgnoreCase(Integer pageNumber, Integer pageSize,
             String sortBy, String search) {
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        Page<Book> bookSearchResult = bookRepository.findBooksByTitleIgnoreCase(paging, search);
+        Page<Book> bookSearchResult =
+                bookRepository.findByTitleContainingIgnoreCase(paging, search);
         if (bookSearchResult.hasContent()) {
             return bookSearchResult.getContent();
         } else {

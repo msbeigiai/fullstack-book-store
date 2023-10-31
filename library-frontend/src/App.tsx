@@ -29,10 +29,7 @@ function App() {
           <NavBar />
         </GridItem>
         <GridItem area="aside" paddingX={5}>
-          <CategoryList
-            setSelectedCategoryId={(categoryId) => setCategoryId(categoryId)}
-            selectedCategoryId={categoryId}
-          />
+          <CategoryList />
         </GridItem>
         <GridItem area="main">
           <BookList />
