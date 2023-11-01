@@ -1,28 +1,24 @@
 package com.msbeigi.librarybackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "book")
 public class Book {
     @Id
-    @SequenceGenerator(
-            name = "book_sequence",
-            sequenceName = "book_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "book_sequence"
-    )
+    @SequenceGenerator(name = "book_sequence", sequenceName = "book_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_sequence")
     private Long id;
 
     @Column(name = "title")
@@ -43,18 +39,15 @@ public class Book {
     @Column(name = "image", columnDefinition = "TEXT")
     private String image;
 
-    @ManyToMany(
-            mappedBy = "books",
-            fetch = FetchType.EAGER
-    )
+    @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
     List<Category> categories = new ArrayList<>();
 
     public Book() {
     }
 
     public Book(String title, String author,
-                String description, Integer copies,
-                Integer copiesAvailable, String image) {
+            String description, Integer copies,
+            Integer copiesAvailable, String image) {
         this.title = title;
         this.author = author;
         this.description = description;
@@ -138,27 +131,3 @@ public class Book {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

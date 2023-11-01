@@ -23,4 +23,7 @@ public interface BookService {
 
         List<Book> findBooksByTitleIgnoreCase(Integer pageNumber, Integer pageSize, String sortBy,
                         String search);
+
+        List<Book> getBooksByCategoryAndSearchIgnoreCase(Integer pageNumber, Integer pageSize, String sortBy,
+                        Long categoryId, String search);
 }

@@ -40,7 +40,11 @@ public class BookController {
                         @RequestParam(name = "search", required = false) String search,
                         HttpServletRequest request) {
 
-                if (categoryId != null) {
+                if (search != null && categoryId != null) {
+                        return ResponseEntity.ok()
+                                        .body(bookService.getBooksByCategoryAndSearchIgnoreCase(pageNumber, pageSize,
+                                                        sortBy, categoryId, search));
+                } else if (categoryId != null) {
                         return ResponseEntity.ok().body(ResponseMapping.builder()
                                         .status(HttpStatus.OK).dateTime(LocalDateTime.now())
                                         .next(Utils.createHttp(request.getServerName(),
@@ -51,8 +55,7 @@ public class BookController {
                                         .results(bookService.findBooksByCategoriesId(pageNumber,
                                                         pageSize, sortBy, categoryId))
                                         .build());
-                }
-                if (search != null) {
+                } else if (search != null) {
                         return ResponseEntity.ok().body(ResponseMapping.builder()
                                         .status(HttpStatus.OK).dateTime(LocalDateTime.now())
                                         .next(Utils.createHttp(request.getServerName(),
@@ -63,15 +66,14 @@ public class BookController {
                                         .results(bookService.findBooksByTitleIgnoreCase(pageNumber,
                                                         pageSize, sortBy, search))
                                         .build());
-                }
-                return ResponseEntity.ok().body(ResponseMapping.builder().status(HttpStatus.OK)
-                                .dateTime(LocalDateTime.now())
-                                .next(Utils.createHttp(request.getServerName(),
-                                                request.getServerPort(), request.getContextPath(),
-                                                "api/v1/books") + "?page=" + (pageNumber + 1))
-                                .results(bookService.findAll(pageNumber, pageSize, sortBy))
-                                .build());
-
+                } else
+                        return ResponseEntity.ok().body(ResponseMapping.builder().status(HttpStatus.OK)
+                                        .dateTime(LocalDateTime.now())
+                                        .next(Utils.createHttp(request.getServerName(),
+                                                        request.getServerPort(), request.getContextPath(),
+                                                        "api/v1/books") + "?page=" + (pageNumber + 1))
+                                        .results(bookService.findAll(pageNumber, pageSize, sortBy))
+                                        .build());
 
         }
 
@@ -84,8 +86,10 @@ public class BookController {
 
         /*
          * @GetMapping("/categories/{id}/books") public ResponseEntity<?>
-         * getBookAllCategory(@PathVariable("id") Long id) { return ResponseEntity.ok() .body(
-         * ResponseMapping.builder() .status(HttpStatus.OK) .dateTime(LocalDateTime.now())
+         * getBookAllCategory(@PathVariable("id") Long id) { return ResponseEntity.ok()
+         * .body(
+         * ResponseMapping.builder() .status(HttpStatus.OK)
+         * .dateTime(LocalDateTime.now())
          * .results(bookService.findBooksByCategoriesId(id)) .build() ); }
          */
 

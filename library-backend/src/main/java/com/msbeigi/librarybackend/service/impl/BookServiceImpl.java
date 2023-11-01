@@ -82,12 +82,10 @@ public class BookServiceImpl implements BookService {
     @Override
     public Category addCategory(Long bookId, CategoryRequest categoryRequest) {
         Book book = bookRepository.findById(bookId).orElseThrow();
-        boolean categoryExist =
-                categoryRepository.findByNameIgnoreCase(categoryRequest.name()).isPresent();
+        boolean categoryExist = categoryRepository.findByNameIgnoreCase(categoryRequest.name()).isPresent();
 
         if (categoryExist) {
-            Category category =
-                    categoryRepository.findByNameIgnoreCase(categoryRequest.name()).get();
+            Category category = categoryRepository.findByNameIgnoreCase(categoryRequest.name()).get();
             book.addCategory(category);
             bookRepository.save(book);
             return category;
@@ -102,14 +100,26 @@ public class BookServiceImpl implements BookService {
     public List<Book> findBooksByTitleIgnoreCase(Integer pageNumber, Integer pageSize,
             String sortBy, String search) {
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        Page<Book> bookSearchResult =
-                bookRepository.findByTitleContainingIgnoreCase(paging, search);
+        Page<Book> bookSearchResult = bookRepository.findByTitleContainingIgnoreCase(paging, search);
         if (bookSearchResult.hasContent()) {
             return bookSearchResult.getContent();
         } else {
             return new ArrayList<>();
         }
     }
+
+    @Override
+    public List<Book> getBooksByCategoryAndSearchIgnoreCase(Integer pageNumber, Integer pageSize, String sortBy,
+            Long categoryId, String search) {
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+
+        List<Book> booksByCategory = findBooksByCategoriesId(pageNumber, pageSize, sortBy, categoryId);
+        List<Book> booksBySearch = findBooksByTitleIgnoreCase(pageNumber, pageSize, sortBy, search);
+
+        booksByCategory.retainAll(booksBySearch);
+
+        return booksByCategory;
+
+    }
+
 }
-
-
