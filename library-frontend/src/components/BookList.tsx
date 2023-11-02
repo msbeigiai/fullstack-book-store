@@ -3,8 +3,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import useBooks from "../hooks/useBooks";
 import BookCard from "./BookCard";
-
-
+import BookCardContainer from "./BookCardContainer";
 
 const BookList = () => {
   const { data, isLoading, error, fetchNextPage, hasNextPage } = useBooks();
@@ -13,7 +12,6 @@ const BookList = () => {
 
   const fetchBookCount =
     data?.pages.reduce((acc, page) => acc + page.results.length, 0) || 0;
-
 
   if (isLoading) return <Spinner />;
 
@@ -31,8 +29,10 @@ const BookList = () => {
       >
         {data?.pages.map((page, index) => (
           <React.Fragment key={index}>
-            {page.results.map(book => (
-              <BookCard key={book.id} book={book} />
+            {page.results.map((book) => (
+              <BookCardContainer key={book.id}>
+                <BookCard book={book} />
+              </BookCardContainer>
             ))}
           </React.Fragment>
         ))}
@@ -65,11 +65,6 @@ const BookList = () => {
   //     </SimpleGrid >
   //   </InfiniteScroll>
   // )
-
-
-
-
-
 };
 
 export default BookList;
