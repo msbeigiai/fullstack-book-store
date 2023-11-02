@@ -1,5 +1,14 @@
-import { Card, CardBody, Heading, Image, VStack, Text } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  Heading,
+  Image,
+  VStack,
+  Text,
+  HStack,
+} from "@chakra-ui/react";
 import { Book } from "../entities/Book";
+import { FaBuffer, FaCreativeCommonsShare } from "react-icons/fa";
 
 interface Props {
   book: Book;
@@ -12,8 +21,16 @@ const BookCard = ({ book }: Props) => {
       <CardBody>
         <VStack padding={1} align="flex-start">
           <Heading fontSize="xl">{book.title}</Heading>
-          <Text fontWeight='bold'>Id: {book.id}</Text>
-          <Text>Available: {book.copiesAvailable}</Text>
+          <VStack align="flex-start">
+            <HStack>
+              <FaBuffer />
+              <Text>Available: {book.copiesAvailable}</Text>
+            </HStack>
+            <HStack>
+              <FaCreativeCommonsShare />
+              <Text>Copies: {book.copies}</Text>
+            </HStack>
+          </VStack>
         </VStack>
       </CardBody>
     </Card>
