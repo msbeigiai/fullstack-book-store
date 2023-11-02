@@ -2,6 +2,9 @@ package com.msbeigi.librarybackend.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+
+import org.hibernate.mapping.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -113,13 +116,9 @@ public class BookServiceImpl implements BookService {
             Long categoryId, String search) {
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
 
-        List<Book> booksByCategory = findBooksByCategoriesId(pageNumber, pageSize, sortBy, categoryId);
-        List<Book> booksBySearch = findBooksByTitleIgnoreCase(pageNumber, pageSize, sortBy, search);
+        Page<Book> findBooksByCategoriesId = bookRepository.findBooksByCategoriesId(paging, categoryId);
 
-        booksByCategory.retainAll(booksBySearch);
-
-        return booksByCategory;
-
+        return findBooksByCategoriesId.stream().filter(b -> b.getTitle().contains(search)).toList();
     }
 
 }
