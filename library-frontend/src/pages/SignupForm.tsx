@@ -1,13 +1,25 @@
+import { Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormTextInput from "../components/FormTextInput";
-import { Button } from "@chakra-ui/react";
+
+interface SignupFormValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 const SignupForm = () => {
+  const initialValues: SignupFormValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+  };
   return (
-    <>
+    <Container maxW="md">
       <Formik
-        initialValues={{ firstName: "", lastName: "", email: "" }}
+        initialValues={initialValues}
+        validateOnMount
         validationSchema={Yup.object({
           firstName: Yup.string()
             .max(15, "Must be 15 characters or less")
@@ -32,30 +44,28 @@ const SignupForm = () => {
             name="firstName"
             type="text"
             placeholder="Jane"
-            id={""}
-            children={undefined}
+            id=""
           />
           <FormTextInput
             label="Last Name"
             name="lastName"
             type="text"
             placeholder="Doe"
-            id={""}
-            children={undefined}
+            id=""
           />
-
           <FormTextInput
             label="Email Address"
             name="email"
             type="email"
             placeholder="jane@formik.com"
-            id={""}
-            children={undefined}
+            id=""
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" marginTop={4}>
+            Submit
+          </Button>
         </Form>
       </Formik>
-    </>
+    </Container>
   );
 };
 

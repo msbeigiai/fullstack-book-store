@@ -1,12 +1,13 @@
-import { HStack, Text } from "@chakra-ui/react";
-import SearchInput from "./SearchInput";
+import { HStack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import ColorModeSwitch from "./ColorModeSwitch";
+import SearchInput from "./SearchInput";
 
 const NavBar = () => {
   return (
     <>
       <HStack padding="10px">
-        <Text>NavBar</Text>
+        <Link to="/">Library</Link>
         <SearchInput />
         <ColorModeSwitch />
       </HStack>
