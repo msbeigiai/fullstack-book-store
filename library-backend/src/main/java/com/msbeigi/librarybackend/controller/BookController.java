@@ -63,7 +63,7 @@ public class BookController {
                     .results(bookService.findBooksByCategoriesId(pageNumber,
                             pageSize, sortBy, categoryId))
                     .build());
-        } else if (search != null && search != "") {
+        } else if (search != null && !search.isEmpty()) {
             return ResponseEntity.ok().body(ResponseMapping.builder()
                     .status(HttpStatus.OK).dateTime(LocalDateTime.now())
                     .next(Utils.createHttp(request.getServerName(),

@@ -10,6 +10,7 @@ const NavBar = () => {
         <Link to="/">Library</Link>
         <SearchInput />
         <ColorModeSwitch />
+        <Link to="/login">Login</Link>
       </HStack>
     </>
   );

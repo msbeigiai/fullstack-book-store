@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Button, Container } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormTextInput from "../components/FormTextInput";
@@ -47,6 +47,9 @@ const LoginForm = () => {
             placeholder="******"
             id=""
           />
+          <Button type="submit" marginTop={4}>
+            Login
+          </Button>
         </Form>
       </Formik>
     </Container>
