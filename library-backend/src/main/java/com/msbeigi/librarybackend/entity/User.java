@@ -1,6 +1,8 @@
 package com.msbeigi.librarybackend.entity;
 
 import com.msbeigi.librarybackend.model.Roles;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Getter
+@Setter
 public class User implements UserDetails {
 
     @Id
@@ -35,6 +39,18 @@ public class User implements UserDetails {
     private String imageUrl;
     private Boolean enabled;
     private Roles roles;
+
+    public User() {
+    }
+
+    public User(String name, String email, String password, String imageUrl, Boolean enabled, Roles roles) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.imageUrl = imageUrl;
+        this.enabled = enabled;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -70,4 +86,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
+
 }
