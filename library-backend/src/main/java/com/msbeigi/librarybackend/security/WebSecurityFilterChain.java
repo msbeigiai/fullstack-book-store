@@ -1,4 +1,4 @@
-package com.msbeigi.librarybackend.config;
+package com.msbeigi.librarybackend.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class WebSecurityFilterChain {
 
     private static final String GLOBAL_URI = "/api/v1";
 
