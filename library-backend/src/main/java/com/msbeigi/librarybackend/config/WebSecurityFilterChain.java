@@ -1,4 +1,4 @@
-package com.msbeigi.librarybackend.security;
+package com.msbeigi.librarybackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

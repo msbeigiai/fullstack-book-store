@@ -1,10 +1,12 @@
-package com.msbeigi.librarybackend.security;
+package com.msbeigi.librarybackend.service.impl;
 
 import com.msbeigi.librarybackend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
