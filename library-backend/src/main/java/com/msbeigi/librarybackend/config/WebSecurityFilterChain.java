@@ -25,6 +25,7 @@ public class WebSecurityFilterChain {
                         .permitAll()
                         .antMatchers(HttpMethod.GET, GLOBAL_URI + "/categories/**")
                         .permitAll()
+                        .antMatchers(GLOBAL_URI + "/register").permitAll()
                         .anyRequest()
                         .authenticated());
         return http.build();

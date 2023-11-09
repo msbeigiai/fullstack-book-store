@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/*
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -22,3 +23,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         new UsernameNotFoundException("User with email %s not found!".formatted(username)));
     }
 }
+*/
