@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class UseController {
+public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerNewUser(@RequestBody UserRegisterRequest request) {
-
+        return null;
     }
 }
