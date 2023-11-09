@@ -21,10 +21,7 @@ public class WebSecurityFilterChain {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((requests) -> requests
-                        .antMatchers(HttpMethod.GET, GLOBAL_URI + "/books/**")
-                        .permitAll()
-                        .antMatchers(HttpMethod.GET, GLOBAL_URI + "/categories/**")
-                        .permitAll()
+                        .antMatchers(HttpMethod.GET, GLOBAL_URI + "/categories").permitAll()
                         .antMatchers(GLOBAL_URI + "/register").permitAll()
                         .anyRequest()
                         .authenticated());
@@ -33,3 +30,5 @@ public class WebSecurityFilterChain {
 
 
 }
+    /*.antMatchers(HttpMethod.GET, GLOBAL_URI + "/books/**")
+                        .permitAll()*/

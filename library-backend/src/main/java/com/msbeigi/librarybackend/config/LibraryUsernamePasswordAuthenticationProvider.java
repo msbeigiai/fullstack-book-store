@@ -18,7 +18,8 @@ public class LibraryUsernamePasswordAuthenticationProvider implements Authentica
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public LibraryUsernamePasswordAuthenticationProvider(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public LibraryUsernamePasswordAuthenticationProvider(
+            UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -32,7 +33,7 @@ public class LibraryUsernamePasswordAuthenticationProvider implements Authentica
                         new UsernameNotFoundException("User with email %s not found!".formatted(username)));
         if (passwordEncoder.matches(password, user.getPassword())) {
             return new UsernamePasswordAuthenticationToken(
-                    username, password, List.of(new SimpleGrantedAuthority(user.getRoles().name())));
+                    username, password, List.of(new SimpleGrantedAuthority(user.getRole())));
         } else throw new BadCredentialsException("Invalid password. No user registered with this email");
     }
 

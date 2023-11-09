@@ -27,6 +27,6 @@ public class UserController {
     public ResponseEntity<?> registerNewUser(@RequestBody UserRegisterRequest request) {
         userService.registerUser(request);
         return ResponseEntity.created(URI.create(""))
-                .body("User with email %s has been successfully registered!");
+                .body("User with email %s has been successfully registered!".formatted(request.email()));
     }
 }

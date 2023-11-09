@@ -1,21 +1,15 @@
 package com.msbeigi.librarybackend.entity;
 
-import com.msbeigi.librarybackend.model.Roles;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-public class User implements UserDetails {
+public class User  {
 
     @Id
     @SequenceGenerator(
@@ -38,55 +32,19 @@ public class User implements UserDetails {
     private String password;
     private String imageUrl;
     private Boolean enabled;
-    private Roles roles;
+    private String role;
 
     public User() {
     }
 
-    public User(String name, String email, String password, String imageUrl, Boolean enabled, Roles roles) {
+    public User(String name, String email, String password,
+                String imageUrl, Boolean enabled, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.imageUrl = imageUrl;
         this.enabled = enabled;
-        this.roles = roles;
+        this.role = role;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(roles.name()));
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-
 
 }

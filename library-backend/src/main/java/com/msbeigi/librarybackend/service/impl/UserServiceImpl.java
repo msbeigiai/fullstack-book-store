@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
                 passwordEncoder.encode(request.password()),
                 request.imageUrl(),
                 true,
-                Roles.valueOf(request.role())
+                request.role()
         );
 
         userRepository.save(user);
