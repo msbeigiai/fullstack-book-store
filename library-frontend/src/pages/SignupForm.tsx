@@ -1,4 +1,11 @@
-import { Button, Container } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Button,
+  Container,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import FormTextInput from "../components/FormTextInput";
@@ -21,6 +28,13 @@ const SignupForm = () => {
   };
   return (
     <Container maxW="md">
+      {setUserRegister.error && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{setUserRegister.error.message}</AlertDescription>
+        </Alert>
+      )}
       <Formik
         initialValues={initialValues}
         validateOnMount
@@ -37,7 +51,7 @@ const SignupForm = () => {
         })}
         onSubmit={(data, { setSubmitting }) => {
           setTimeout(() => {
-            alert(JSON.stringify(data, null, 2));
+            // alert(JSON.stringify(data, null, 2));
             setUserRegister.mutate(data);
             setSubmitting(false);
           }, 400);
@@ -65,8 +79,12 @@ const SignupForm = () => {
             placeholder="********"
             id=""
           />
-          <Button type="submit" marginTop={4}>
-            Submit
+          <Button
+            type="submit"
+            marginTop={4}
+            disabled={setUserRegister.isLoading}
+          >
+            {setUserRegister.isLoading ? "Submitting..." : "Submit"}
           </Button>
         </Form>
       </Formik>
