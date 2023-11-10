@@ -7,12 +7,16 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class LibraryUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
 
     private final UserRepository userRepository;
@@ -32,8 +36,10 @@ public class LibraryUsernamePasswordAuthenticationProvider implements Authentica
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User with email %s not found!".formatted(username)));
         if (passwordEncoder.matches(password, user.getPassword())) {
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            authorities.add(new SimpleGrantedAuthority(user.getRole()));
             return new UsernamePasswordAuthenticationToken(
-                    username, password, List.of(new SimpleGrantedAuthority(user.getRole())));
+                    username, password, authorities);
         } else throw new BadCredentialsException("Invalid password. No user registered with this email");
     }
 
