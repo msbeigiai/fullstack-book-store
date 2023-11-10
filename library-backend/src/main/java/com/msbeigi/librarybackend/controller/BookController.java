@@ -13,8 +13,8 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@RequestMapping("/api/v1")
 @RestController
+@RequestMapping("/api/v1")
 public class BookController {
 
     private final BookService bookService;

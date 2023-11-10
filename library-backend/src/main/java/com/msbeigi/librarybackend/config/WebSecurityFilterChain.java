@@ -15,7 +15,7 @@ import java.util.List;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class WebSecurityFilterChain {
 
     private static final List<String> PERMITTED_URI = Arrays.asList("/api/v1/categories", "/api/v1/register");
@@ -26,7 +26,7 @@ public class WebSecurityFilterChain {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/books")
+                        .requestMatchers("api/v1/books")
                         .authenticated()
                         .anyRequest()
                         .permitAll()
