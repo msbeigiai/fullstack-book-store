@@ -1,7 +1,6 @@
 package com.msbeigi.librarybackend.service.impl;
 
 import com.msbeigi.librarybackend.entity.User;
-import com.msbeigi.librarybackend.model.Roles;
 import com.msbeigi.librarybackend.model.UserRegisterRequest;
 import com.msbeigi.librarybackend.repository.UserRepository;
 import com.msbeigi.librarybackend.service.UserService;
@@ -29,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserRegisterRequest request) {
+        if (userRepository.existsByEmailIgnoreCase(request.email())) {
+            throw new RuntimeException("User with email already exists");
+        }
         User user = new User(
                 request.name(),
                 request.email(),
