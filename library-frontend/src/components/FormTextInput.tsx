@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -21,7 +23,10 @@ const FormTextInput = (props: Props) => {
       <FormLabel htmlFor={props.id || props.name}>{props.label}</FormLabel>
       <Input className="text-input" {...field} {...props}></Input>
       {meta.touched && meta.error ? (
-        <FormErrorMessage>{meta.error}</FormErrorMessage>
+        <Alert className="error" status="error" mt="2">
+          <AlertIcon />
+          {meta.error}
+        </Alert>
       ) : null}
     </FormControl>
   );
