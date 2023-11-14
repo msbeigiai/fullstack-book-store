@@ -15,7 +15,6 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class User  {
 
@@ -46,4 +45,13 @@ public class User  {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    public User(String name, String email, String password, String imageUrl,
+                Boolean enabled, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.imageUrl = imageUrl;
+        this.enabled = enabled;
+        this.role = role;
+    }
 }
