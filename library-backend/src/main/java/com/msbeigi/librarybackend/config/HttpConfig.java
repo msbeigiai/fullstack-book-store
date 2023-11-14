@@ -10,6 +10,7 @@ import java.util.List;
 
 @Configuration
 public class HttpConfig {
+    
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource config =
