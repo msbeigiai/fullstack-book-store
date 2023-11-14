@@ -17,6 +17,8 @@ public class Authority {
     @Column(name = "authority_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne

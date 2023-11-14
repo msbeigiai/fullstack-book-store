@@ -1,5 +1,6 @@
 package com.msbeigi.librarybackend.config;
 
+import com.msbeigi.librarybackend.entity.Authority;
 import com.msbeigi.librarybackend.entity.User;
 import com.msbeigi.librarybackend.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,8 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class LibraryUsernamePasswordAuthenticationProvider implements AuthenticationProvider {
@@ -36,15 +38,19 @@ public class LibraryUsernamePasswordAuthenticationProvider implements Authentica
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User with email %s not found!".formatted(username)));
         if (passwordEncoder.matches(password, user.getPassword())) {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority(user.getRole()));
+
             return new UsernamePasswordAuthenticationToken(
-                    username, password, authorities);
+                    username, password, getGrantedAuthorities(user.getAuthorities()));
         } else throw new BadCredentialsException("Invalid password. No user registered with this email");
     }
 
     @Override
     public boolean supports(Class<?> authentication) {
         return (UsernamePasswordAuthenticationToken.class).isAssignableFrom(authentication);
+    }
+
+    public List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+        return authorities.stream().map(a ->
+                new SimpleGrantedAuthority(a.getName())).collect(Collectors.toList());
     }
 }
